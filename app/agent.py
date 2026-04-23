@@ -13,7 +13,7 @@ def detect_intent(state: AgentState):
 
 # Step 2: Handle inquiries via RAG
 def handle_query(state: AgentState):
-    response = retrieve_answer(state["messages"][-1])
+    response = retrieve_answer(state["messages"][-1], state["messages"])
     state["messages"].append(response)
     return state
 
@@ -60,11 +60,14 @@ def handle_lead(state):
     return state
 
 # Step 4: Routing
-def router(state: AgentState):
+def router(state):
 
-    # 🚨 If already collecting lead → STAY there
     if state.get("stage") == "lead_collection":
         return "lead"
+
+    if state["intent"] == "closing":
+        state["messages"].append("Got it! 😊 Feel free to reach out anytime. Have a great day!")
+        return END
 
     if state["intent"] == "greeting":
         state["messages"].append(GREETING_RESPONSE)
@@ -74,7 +77,7 @@ def router(state: AgentState):
         return "query"
 
     if state["intent"] == "high_intent":
-        state["stage"] = "lead_collection"   # 👈 lock state
+        state["stage"] = "lead_collection"
         return "lead"
 
     return END

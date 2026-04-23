@@ -7,13 +7,14 @@ def load_knowledge():
     with open("data/knowledge_base.json") as f:
         return json.load(f)
 
-def retrieve_answer(query):
+def retrieve_answer(query, messages):
     kb = load_knowledge()
     context = json.dumps(kb, indent=2)
-    history = "\n".join(state["messages"][-3:])  # last 3 messages
+
+    history = "\n".join(messages[-3:])  # last 3 messages
 
     prompt = f"""
-    You are an assistant for AutoStream.
+    You are an AI assistant for AutoStream.
 
     Conversation so far:
     {history}
@@ -21,10 +22,10 @@ def retrieve_answer(query):
     Context:
     {context}
 
-    User question:
+    User Question:
     {query}
 
-    Answer helpfully.
+    Answer clearly and helpfully.
     """
 
     return llm.invoke(prompt).content

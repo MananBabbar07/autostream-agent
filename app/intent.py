@@ -10,12 +10,14 @@ def classify_intent(user_input):
     - greeting
     - inquiry
     - high_intent
+    - closing
 
     Definitions:
     - greeting → casual hello
     - inquiry → asking for info, comparing, exploring
     - high_intent → clear decision or strong buying signal (e.g., "I want this", "I'll go with Pro", "sign me up")
-
+    - closing → thanks, bye, ok got it, see later
+    
     IMPORTANT:
     - If user expresses decision or readiness → ALWAYS high_intent
     - Be strict. Choose only one label.
