@@ -11,7 +11,7 @@ def retrieve_answer(query, messages):
     kb = load_knowledge()
     context = json.dumps(kb, indent=2)
 
-    history = "\n".join(messages[-3:])  # last 3 messages
+    history = "\n".join(messages[-5:])  # last 3 messages
 
     prompt = f"""
     You are an AI assistant for AutoStream.
