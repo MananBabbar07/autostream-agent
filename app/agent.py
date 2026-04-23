@@ -24,7 +24,7 @@ def handle_lead(state):
 
     # Step 1: Name
     if not state.get("name"):
-        state["messages"].append("Sure! Can I have your name?")
+        state["messages"].append("Awesome choice 🚀 Let's get you started. What's your name?")
         return state
 
     # Step 2: Email
@@ -32,22 +32,30 @@ def handle_lead(state):
         state["messages"].append("Great, what's your email?")
         return state
 
-    # ✅ Validate email ONLY after it's entered
+    # Validate email
     if "@" not in state["email"] or "." not in state["email"]:
         state["messages"].append("Please enter a valid email address.")
-        state["email"] = ""   # reset so user re-enters
+        state["email"] = ""
         return state
 
     # Step 3: Platform
     if not state.get("platform"):
-        state["messages"].append("Which platform do you create content on?")
+        state["messages"].append("Which platform do you create content on? (YouTube / Instagram / TikTok)")
+        return state
+
+    # 🔥 ✅ PLATFORM VALIDATION (PUT IT HERE)
+    valid_platforms = ["youtube", "instagram", "tiktok"]
+
+    if state["platform"].lower() not in valid_platforms:
+        state["messages"].append("Please choose: YouTube, Instagram, or TikTok.")
+        state["platform"] = ""
         return state
 
     # ✅ Tool execution
     mock_lead_capture(state["name"], state["email"], state["platform"])
 
     state["messages"].append("You're all set! 🚀 We'll contact you soon.")
-    state["stage"] = ""  # reset
+    state["stage"] = ""
 
     return state
 

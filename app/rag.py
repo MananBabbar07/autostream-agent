@@ -10,19 +10,21 @@ def load_knowledge():
 def retrieve_answer(query):
     kb = load_knowledge()
     context = json.dumps(kb, indent=2)
+    history = "\n".join(state["messages"][-3:])  # last 3 messages
 
     prompt = f"""
-    You are an AI assistant for AutoStream (video editing SaaS).
+    You are an assistant for AutoStream.
 
-    Answer ONLY using the given context.
+    Conversation so far:
+    {history}
 
     Context:
     {context}
 
-    User Question:
+    User question:
     {query}
 
-    Provide a clear, natural, helpful answer.
+    Answer helpfully.
     """
 
     return llm.invoke(prompt).content

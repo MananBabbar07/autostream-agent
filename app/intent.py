@@ -4,17 +4,21 @@ llm = get_llm()
 
 def classify_intent(user_input):
     prompt = f"""
-    You are an intent classifier.
+    You are an intent classifier for a SaaS AI assistant.
 
     Classify into EXACTLY one:
     - greeting
     - inquiry
     - high_intent
 
-    Rules:
-    greeting → hi, hello
-    inquiry → asking about pricing/features
-    high_intent → wants to buy, subscribe, try
+    Definitions:
+    - greeting → casual hello
+    - inquiry → asking for info, comparing, exploring
+    - high_intent → clear decision or strong buying signal (e.g., "I want this", "I'll go with Pro", "sign me up")
+
+    IMPORTANT:
+    - If user expresses decision or readiness → ALWAYS high_intent
+    - Be strict. Choose only one label.
 
     Input: "{user_input}"
 
