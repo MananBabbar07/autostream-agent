@@ -1,0 +1,1 @@
+GREETING_RESPONSE = "Hey! 👋 How can I help you today?"
