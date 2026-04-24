@@ -1,296 +1,240 @@
-# 🚀 AutoStream Conversational AI Agent
+# 🎬 AutoStream Agent — Social-to-Lead Conversational AI
 
-**ServiceHive – Inflx Assignment**
+> A production-style GenAI agent that converts social conversations into qualified leads using intent detection, RAG-based knowledge retrieval, and stateful multi-turn dialogue.
+
+---
+
+## 🎥 Demo
+
+📽️ **[Watch the Demo →](#)**  
+*(Replace `#` with your Google Drive / YouTube link)*
 
 ---
 
 ## 📌 Overview
 
-This project implements a **stateful conversational AI agent** for a fictional SaaS product, **AutoStream**, which provides automated video editing tools.
+**AutoStream Agent** is a conversational AI system built for AutoStream — a fictional SaaS platform for automated video editing. It simulates a real-world lead generation assistant, similar to systems like ServiceHive's Inflx.
 
-The agent is designed to simulate a **real-world “Social-to-Lead” workflow**, where user conversations are intelligently converted into qualified leads.
-
-Unlike basic chatbots, this agent:
-
-* Understands user intent
-* Retrieves grounded information using RAG
-* Tracks multi-turn conversation state
-* Collects structured lead data
-* Executes backend actions (mock API)
+The agent understands user intent, answers product queries using a knowledge base, detects high-intent buyers, and captures lead information — all within a smooth, multi-turn conversation.
 
 ---
 
-## 🧠 Key Features
+## 🧠 Problem Statement
 
-### ✅ Intent Classification
+Build a conversational AI agent that:
 
-The agent classifies user input into:
-
-* `greeting`
-* `inquiry`
-* `high_intent`
-* `closing`
+1. Identifies user **intent** from natural language
+2. Answers queries accurately using **RAG** (Retrieval-Augmented Generation)
+3. Detects **high-intent signals** in user messages
+4. Collects user details and triggers **lead capture**
 
 ---
 
-### ✅ RAG (Retrieval-Augmented Generation)
+## 🏗️ Architecture
 
-* Uses a **local JSON knowledge base**
-* Ensures **grounded responses (no hallucination)**
-* Includes pricing, features, and policies
+```
+User Input
+    │
+    ▼
+Intent Detection
+    │
+    ▼
+Knowledge Retrieval (RAG)
+    │
+    ▼
+Response Generation
+    │
+    ▼
+Intent Shift Detection
+    │
+    ▼
+Lead Qualification
+    │
+    ▼
+Tool Execution (Lead Capture)
+```
+
+### Key Components
+
+| Component | Role |
+|-----------|------|
+| **LLM** | Intent classification & response generation |
+| **LangGraph** | Stateful multi-step agent workflow |
+| **RAG Pipeline** | Grounds responses in local knowledge base |
+| **Memory / State** | Tracks context across conversation turns |
+| **Tool Layer** | Executes lead capture after all fields collected |
 
 ---
 
-### ✅ Stateful Conversation (LangGraph)
+## ✨ Features
 
-* Maintains memory across multiple turns
-* Uses a structured `AgentState`
-* Handles transitions between:
+### 🎯 Intent Detection
+Classifies user messages into:
+- Greeting
+- Product / price inquiry
+- High-intent lead signal
 
-  * Inquiry flow
-  * Lead collection flow
+Uses structured LLM prompting for flexibility over rigid rule-based logic.
 
 ---
 
-### ✅ Lead Capture (Tool Execution)
+### 📚 RAG-Based Knowledge Retrieval
+- Local JSON knowledge base
+- Retrieves grounded answers for:
+  - Pricing plans
+  - Product features
+  - Company policies
+- Prevents hallucinations and ensures accuracy
 
-* Collects:
+---
 
-  * Name
-  * Email
-  * Platform
-* Executes mock function:
+### 🔁 Stateful Conversation Handling
+Maintains context across multiple turns, tracking:
+- Current intent
+- Collected user fields
+- Conversation stage
+
+Enables smooth transitions from query → qualification → lead capture.
+
+---
+
+### 📋 Lead Capture Tool (Controlled Execution)
+
+Collects the following before triggering the tool:
+- **Name**
+- **Email**
+- **Creator Platform**
 
 ```python
 def mock_lead_capture(name, email, platform):
     print(f"Lead captured successfully: {name}, {email}, {platform}")
 ```
 
----
-
-### ✅ Validation & Control
-
-* Prevents premature tool execution
-* Validates:
-
-  * Email format
-  * Platform selection (YouTube / Instagram / TikTok)
-* Ensures deterministic flow
+> ⚠️ Tool fires **only after all required fields are collected** — no premature triggers.
 
 ---
 
-## 🏗️ Project Structure
+## 💬 Example Conversation
 
-```bash
-autostream-agent/
-├── app/
-│   ├── agent.py        # LangGraph workflow (core logic)
-│   ├── intent.py       # Intent classification
-│   ├── rag.py          # RAG pipeline
-│   ├── tools.py        # Lead capture tool
-│   ├── state.py        # Conversation state schema
-│   ├── prompts.py      # Prompt templates
-│   ├── llm.py          # LLM initialization (.env based)
-│
-├── data/
-│   └── knowledge_base.json   # Pricing + policies
-│
-├── main.py            # CLI entry point
-├── requirements.txt   # Dependencies
-├── README.md
-├── .env               # API key (not committed)
-├── .gitignore
+```
+User:   Hi, tell me about your pricing.
+
+Agent:  We offer two plans:
+        • Basic: $29/month — 10 videos, 720p
+        • Pro:   $79/month — Unlimited videos, 4K, AI captions
+
+User:   That sounds great. I want to try the Pro plan for my YouTube channel.
+
+Agent:  Awesome! Could you share your name?
+
+User:   Manan
+
+Agent:  Thanks Manan! What's your email address?
+
+User:   manan@gmail.com
+
+Agent:  Got it. Which platform do you primarily create on?
+
+User:   YouTube
+
+→ ✅ Lead captured: Manan | manan@gmail.com | YouTube
 ```
 
 ---
 
 ## ⚙️ Tech Stack
 
-* Python 3.9+
-* LangChain
-* LangGraph
-* OpenAI GPT-4o-mini
-* dotenv
+| Layer | Technology |
+|-------|------------|
+| Language | Python 3.9+ |
+| Agent Framework | LangChain / LangGraph |
+| LLM | GPT / Gemini / Claude |
+| Knowledge Base | JSON (local) |
+| Deployment (concept) | WhatsApp Business API / Twilio |
 
 ---
 
-## 🔑 Setup Instructions
-
-### 1. Clone Repository
+## 🚀 Getting Started
 
 ```bash
-git clone <your-repo-url>
+# 1. Clone the repository
+git clone https://github.com/MananBabbar07/autostream-agent
 cd autostream-agent
-```
 
----
-
-### 2. Create Virtual Environment (recommended)
-
-```bash
-python -m venv venv
-```
-
-Activate:
-
-**Windows**
-
-```bash
-venv\Scripts\activate
-```
-
-**Mac/Linux**
-
-```bash
-source venv/bin/activate
-```
-
----
-
-### 3. Install Dependencies
-
-```bash
+# 2. Install dependencies
 pip install -r requirements.txt
-```
 
----
-
-### 4. Add OpenAI API Key
-
-Create a `.env` file in the root directory:
-
-```bash
-OPENAI_API_KEY=your_api_key_here
-```
-
-⚠️ Do NOT commit this file (already added to `.gitignore`)
-
----
-
-## ▶️ Run the Project
-
-```bash
+# 3. Run the agent
 python main.py
 ```
 
-You will see:
+---
 
-```bash
-AutoStream AI Agent (type 'exit' to quit)
+## 🧩 Design Decisions
+
+**LLM-based Intent Detection**  
+Chosen over keyword matching to handle varied user phrasing robustly.
+
+**LangGraph for Stateful Workflow**  
+Enables multi-turn reasoning and controlled stage transitions without spaghetti logic.
+
+**RAG for Knowledge Grounding**  
+Retrieval from a structured knowledge base prevents hallucinations in product responses.
+
+**Delayed Tool Execution**  
+Lead capture is only triggered after all required fields are confirmed — no partial data, no early exits.
+
+---
+
+## 📲 WhatsApp Deployment (Concept)
+
+To deploy this agent on WhatsApp:
+
+1. Set up **WhatsApp Business API** (or Twilio's WhatsApp integration)
+2. Configure a **webhook** to receive incoming messages
+3. Route messages to the **agent backend**
+4. Use the user's **phone number** as the session key
+5. Send agent responses back via the API
+
+This enables real-time conversational automation at scale on messaging platforms.
+
+---
+
+## 🔮 Future Improvements
+
+- [ ] Fine-tuned intent classifier for higher accuracy
+- [ ] Vector embeddings (e.g., FAISS / Pinecone) for improved RAG retrieval
+- [ ] Real CRM API integration for lead storage
+- [ ] REST API deployment (FastAPI / Flask)
+- [ ] Conversation analytics dashboard
+
+---
+
+## 📁 Project Structure
+
+```
+autostream-agent/
+├── main.py               # Entry point
+├── agent/
+│   ├── graph.py          # LangGraph workflow definition
+│   ├── intent.py         # Intent detection logic
+│   ├── retriever.py      # RAG pipeline
+│   └── tools.py          # Lead capture tool
+├── knowledge_base/
+│   └── data.json         # Pricing, features, policies
+├── requirements.txt
+└── README.md
 ```
 
 ---
 
-## 💬 Example Conversation Flow
+## 👤 Author
 
-### Step 1 – Inquiry
-
-```
-You: Hi, tell me about pricing
-```
-
-### Step 2 – RAG Response
-
-```
-Bot: Basic plan is $29/month...
-```
+**Manan Babbar**  
+[GitHub](https://github.com/MananBabbar07) · [LinkedIn](#)
 
 ---
 
-### Step 3 – High Intent
+## 📄 License
 
-```
-You: I’ll go with the Pro plan
-```
-
----
-
-### Step 4 – Lead Collection
-
-```
-Bot: What's your name?
-You: Manan
-
-Bot: What's your email?
-You: manan@gmail.com
-
-Bot: Which platform?
-You: YouTube
-```
-
----
-
-### Step 5 – Tool Execution
-
-```
-Lead captured successfully: Manan, manan@gmail.com, YouTube
-```
-
----
-
-## 🔄 Agent Workflow
-
-1. User input received
-2. Intent classified using LLM
-3. Routed via LangGraph:
-
-   * Inquiry → RAG
-   * High Intent → Lead Flow
-4. Slot filling (name, email, platform)
-5. Tool execution
-6. Response returned
-
----
-
-## 📲 WhatsApp Integration (Concept)
-
-To integrate this agent with WhatsApp:
-
-1. Use **Meta WhatsApp Cloud API**
-2. Set up a **Webhook (Flask/FastAPI server)**
-3. Incoming messages → sent to agent
-4. Agent processes:
-
-   * Intent
-   * RAG
-   * Tool execution
-5. Response sent back via WhatsApp API
-6. Store user state in Redis/DB for persistence
-
----
-
-## 🧪 Evaluation Alignment
-
-This project demonstrates:
-
-* ✅ Agent reasoning & intent detection
-* ✅ Correct RAG usage
-* ✅ Clean state management
-* ✅ Safe tool execution
-* ✅ Real-world deployability
-
----
-
-## 🧠 Design Decisions
-
-* **LangGraph** used for deterministic workflow control
-* **Centralized LLM config** via `.env` for security
-* **Structured state** for multi-turn conversations
-* **Prompt-constrained RAG** to reduce hallucination
-* **Slot-filling logic** to ensure complete data before tool calls
-
----
-
-## ⚠️ Notes
-
-* No vector DB used → kept lightweight for assignment
-* Designed for clarity and correctness over complexity
-* Easily extendable to API / UI / production system
-
----
-
-## 👨‍💻 Author
-
-Manan
-
----
+This project is for educational and demonstration purposes.
