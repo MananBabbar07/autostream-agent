@@ -211,13 +211,17 @@ This enables real-time conversational lead generation at scale on messaging plat
 ```
 autostream-agent/
 ├── main.py               # Entry point
-├── agent/
-│   ├── graph.py          # LangGraph workflow definition
-│   ├── intent.py         # Intent detection logic
-│   ├── retriever.py      # RAG pipeline
+├── app/
+│   ├── agent.py          # Core agent logic
+│   ├── intent.py         # Intent detection (LLM-based classification)
+│   ├── llm.py            # LLM client configuration
+│   ├── prompts.py        # Prompt templates
+│   ├── rag.py            # RAG pipeline (retrieval + grounding)
+│   ├── state.py          # Conversation state management
 │   └── tools.py          # Lead capture tool
-├── knowledge_base/
-│   └── data.json         # Pricing, features, policies
+├── data/
+│   └── knowledge_base.json  # Pricing, features, policies
+├── .env                  # API keys (not committed)
 ├── requirements.txt
 └── README.md
 ```
